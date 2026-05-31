@@ -1,0 +1,32 @@
+name: MoshokuTenseiplugin
+version: 1.0.0
+main: pl.axtra.moshoku.MoshokuTenseiPlugin
+description: Advanced Magic System Plugin inspired by Mushoku Tensei
+authors: [axtr_a]
+api-version: "1.21"
+
+commands:
+  mpanel:
+    description: Open your character panel
+    usage: /mpanel
+    permission: moshoku.use
+  madmin:
+    description: Admin panel for magic system
+    usage: /madmin
+    permission: moshoku.admin
+  spellbook:
+    description: Open your spellbook
+    usage: /spellbook
+    permission: moshoku.use
+  manaregen:
+    description: Configure mana regeneration
+    usage: /manaregen
+    permission: moshoku.admin
+
+permissions:
+  moshoku.use:
+    description: Allows player to use magic system
+    default: true
+  moshoku.admin:
+    description: Allows admin to use admin panel
+    default: op
