@@ -28,7 +28,7 @@ public class WaterMagic {
             projectile.setSmall(true);
             
             player.playSound(loc, Sound.BLOCK_WATER_AMBIENT, 1, 1.5f);
-            player.getWorld().spawnParticle(Particle.WATER_SPLASH, loc, 15, 0.3, 0.3, 0.3);
+            player.getWorld().spawnParticle(Particle.SPLASH, loc, 15, 0.3, 0.3, 0.3);
             
             int ticks = 0;
             var task = new Object() {
@@ -42,7 +42,7 @@ public class WaterMagic {
                     }
                     
                     projectile.setVelocity(direction.multiply(1.5));
-                    player.getWorld().spawnParticle(Particle.WATER_SPLASH, projectile.getLocation(), 3);
+                    player.getWorld().spawnParticle(Particle.SPLASH, projectile.getLocation(), 3);
                 }
             };
         }
@@ -68,7 +68,7 @@ public class WaterMagic {
             
             for (Entity entity : player.getWorld().getNearbyEntities(center, 5, 5, 5)) {
                 if (entity instanceof LivingEntity && !entity.equals(player)) {
-                    ((LivingEntity) entity).damage(18 + (level * 2));
+                    ((LivingEntity) entity).damage(18 + (level * 2), player);
                     entity.setFreezeTicks(60 + (level * 10));
                 }
             }
@@ -93,7 +93,7 @@ public class WaterMagic {
             for (int x = -8; x <= 8; x++) {
                 for (int y = 0; y < 3; y++) {
                     Location waveLoc = wave.clone().add(x, y, 0);
-                    player.getWorld().spawnParticle(Particle.WATER_SPLASH, waveLoc, 3);
+                    player.getWorld().spawnParticle(Particle.SPLASH, waveLoc, 3);
                 }
             }
             
@@ -101,7 +101,7 @@ public class WaterMagic {
             
             for (Entity entity : player.getWorld().getNearbyEntities(wave, 10, 5, 5)) {
                 if (entity instanceof LivingEntity && !entity.equals(player)) {
-                    ((LivingEntity) entity).damage(30 + (level * 4));
+                    ((LivingEntity) entity).damage(30 + (level * 4), player);
                     Vector knockback = entity.getLocation().toVector().subtract(wave.toVector()).normalize().multiply(1.5);
                     entity.setVelocity(knockback.setY(0.5));
                 }
@@ -124,7 +124,7 @@ public class WaterMagic {
         public void cast(Player player, Vector direction) {
             Location center = player.getEyeLocation().add(direction.normalize().multiply(8));
             
-            player.playSound(center, Sound.BLOCK_ICE_BREAK, 1, 0.5f);
+            player.playSound(center, Sound.BLOCK_GLASS_BREAK, 1, 0.5f);
             
             for (int i = 0; i < 100; i++) {
                 double angle = Math.random() * Math.PI * 2;
@@ -139,7 +139,7 @@ public class WaterMagic {
             
             for (Entity entity : player.getWorld().getNearbyEntities(center, 15, 10, 15)) {
                 if (entity instanceof LivingEntity && !entity.equals(player)) {
-                    ((LivingEntity) entity).damage(60 + (level * 6));
+                    ((LivingEntity) entity).damage(60 + (level * 6), player);
                     entity.setFreezeTicks(150 + (level * 20));
                 }
             }
@@ -171,12 +171,12 @@ public class WaterMagic {
                     Math.random() * 5,
                     Math.sin(angle) * distance
                 );
-                player.getWorld().spawnParticle(Particle.WATER_SPLASH, dropLoc, 5);
+                player.getWorld().spawnParticle(Particle.SPLASH, dropLoc, 5);
             }
             
             for (Entity entity : player.getWorld().getNearbyEntities(loc, 20, 15, 20)) {
                 if (entity instanceof LivingEntity && !entity.equals(player)) {
-                    ((LivingEntity) entity).damage(100 + (level * 12));
+                    ((LivingEntity) entity).damage(100 + (level * 12), player);
                 }
             }
         }
