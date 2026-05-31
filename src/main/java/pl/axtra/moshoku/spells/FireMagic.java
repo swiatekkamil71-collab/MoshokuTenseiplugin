@@ -22,9 +22,11 @@ public class FireMagic {
             Location loc = player.getEyeLocation();
             direction.normalize().multiply(0.5);
             
-            Fireball fireball = player.getWorld().spawn(loc.clone().add(direction), Fireball.class);
-            fireball.setVelocity(direction.multiply(2));
-            fireball.setExplosionPower(2);
+            ArmorStand projectile = player.getWorld().spawn(loc.clone().add(direction), ArmorStand.class);
+            projectile.setGravity(true);
+            projectile.setInvisible(true);
+            projectile.setSmall(true);
+            projectile.setVelocity(direction.multiply(2));
             
             player.playSound(loc, Sound.ENTITY_BLAZE_SHOOT, 1, 1);
             player.getWorld().spawnParticle(Particle.FLAME, loc, 20, 0.5, 0.5, 0.5, 0.1);
@@ -87,7 +89,7 @@ public class FireMagic {
             // Damage nearby entities
             for (Entity entity : player.getWorld().getNearbyEntities(center, 8, 5, 2)) {
                 if (entity instanceof LivingEntity && !entity.equals(player)) {
-                    ((LivingEntity) entity).damage(25 + (level * 3));
+                    ((LivingEntity) entity).damage(25 + (level * 3), player);
                 }
             }
         }
@@ -120,12 +122,13 @@ public class FireMagic {
                     Math.sin(angle) * radius
                 );
                 player.getWorld().spawnParticle(Particle.FLAME, loc, 1);
+                player.getWorld().spawnParticle(Particle.LAVA, loc, 1);
             }
             
             // Damage entities in large radius
             for (Entity entity : player.getWorld().getNearbyEntities(center, 15, 10, 15)) {
                 if (entity instanceof LivingEntity && !entity.equals(player)) {
-                    ((LivingEntity) entity).damage(50 + (level * 5));
+                    ((LivingEntity) entity).damage(50 + (level * 5), player);
                     entity.setFireTicks(100 + (level * 20));
                 }
             }
@@ -166,7 +169,7 @@ public class FireMagic {
             
             for (Entity entity : player.getWorld().getNearbyEntities(center, 20, 20, 20)) {
                 if (entity instanceof LivingEntity && !entity.equals(player)) {
-                    ((LivingEntity) entity).damage(80 + (level * 10));
+                    ((LivingEntity) entity).damage(80 + (level * 10), player);
                     entity.setFireTicks(150 + (level * 30));
                 }
             }
@@ -196,14 +199,15 @@ public class FireMagic {
                 double z = (Math.random() - 0.5) * 40;
                 Location meteorLoc = center.clone().add(x, 0, z);
                 
-                Fireball meteor = player.getWorld().spawn(meteorLoc, Fireball.class);
+                ArmorStand meteor = player.getWorld().spawn(meteorLoc, ArmorStand.class);
+                meteor.setGravity(true);
+                meteor.setInvisible(true);
                 meteor.setVelocity(new Vector(0, -2, 0));
-                meteor.setExplosionPower(4);
             }
             
             for (Entity entity : player.getWorld().getNearbyEntities(center, 30, 30, 30)) {
                 if (entity instanceof LivingEntity && !entity.equals(player)) {
-                    ((LivingEntity) entity).damage(120 + (level * 20));
+                    ((LivingEntity) entity).damage(120 + (level * 20), player);
                 }
             }
         }
@@ -225,7 +229,7 @@ public class FireMagic {
             Location center = player.getEyeLocation().add(direction.normalize().multiply(15));
             
             player.playSound(center, Sound.ENTITY_WARDEN_ROAR, 2, 0);
-            player.playSound(center, Sound.ENTITY_DRAGON_DEATH, 2, 0.5f);
+            player.playSound(center, Sound.ENTITY_WARDEN_DEATH, 2, 0.5f);
             
             // Epic particle show
             for (int i = 0; i < 200; i++) {
@@ -243,7 +247,7 @@ public class FireMagic {
             
             for (Entity entity : player.getWorld().getNearbyEntities(center, 40, 40, 40)) {
                 if (entity instanceof LivingEntity && !entity.equals(player)) {
-                    ((LivingEntity) entity).damage(200 + (level * 50));
+                    ((LivingEntity) entity).damage(200 + (level * 50), player);
                 }
             }
         }
@@ -265,7 +269,7 @@ public class FireMagic {
             Location center = player.getLocation();
             
             player.playSound(center, Sound.ENTITY_WARDEN_ROAR, 2, 0);
-            player.playSound(center, Sound.ENTITY_DRAGON_DEATH, 2, 0.1f);
+            player.playSound(center, Sound.ENTITY_WARDEN_DEATH, 2, 0.1f);
             player.getWorld().createExplosion(center, 10, false, true);
             
             // Cataclysm effect - massive destruction
@@ -285,7 +289,7 @@ public class FireMagic {
             
             for (Entity entity : player.getWorld().getNearbyEntities(center, 60, 60, 60)) {
                 if (entity instanceof LivingEntity && !entity.equals(player)) {
-                    ((LivingEntity) entity).damage(300 + (level * 100));
+                    ((LivingEntity) entity).damage(300 + (level * 100), player);
                 }
             }
         }
