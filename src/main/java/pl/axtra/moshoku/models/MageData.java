@@ -1,8 +1,11 @@
 package pl.axtra.moshoku.models;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class MageData {
+public class MageData implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
     private String playerName;
     private UUID playerUUID;
     
@@ -140,6 +143,9 @@ public class MageData {
     
     public int getCombatLevel() { return combatLevel; }
     public void setCombatLevel(int level) { this.combatLevel = level; }
+    
+    public long getCombatExp() { return combatExp; }
+    public void addCombatExp(long amount) { this.combatExp += amount; }
     
     public double getCurrentMana() { return currentMana; }
     public void setCurrentMana(double mana) { this.currentMana = Math.min(mana, maxMana); }
